@@ -27,5 +27,14 @@ def user_scan(data: UserScanRequest,db: Session = Depends(get_db)):
 def volunteer_scan(qrcode_id: str, db: Session = Depends(get_db)):
     shop = db.query(models.ShopQR).filter(models.ShopQR.qrcode_id == qrcode_id).first()
     if shop:
-        return {"shop_id": shop.shop_id}
+        shop_id =  shop.shop_id
+        shop = db.query(models.ShopOwner).filter(models.ShopOwner.id == shop_id).first()
+        return {
+            "id": shop.id,
+            "shop_id": shop.shop_id,
+            "shop_name": shop.shop_name,
+            "owner_name": shop.owner_name,
+            "phone_number": shop.phone_number,
+            "photo_url": shop.photo_url
+        }
     raise HTTPException(status_code=404, detail="QR Code not found")

@@ -48,10 +48,9 @@ class FormResponse(FormBase):
         orm_mode = True
 
 class VolunteerSchema(BaseModel):
-    volunteer_code: str
     name: str
     password: str
-    status: str = "active"
+    status: bool = True
 
 class VolunteerLogin(BaseModel):
     name: str

@@ -19,4 +19,4 @@ def check_volunteer(credentials: VolunteerLogin, db: Session = Depends(get_db)):
     if volunteer.password != credentials.password:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid password")
 
-    return {"message": "Login successful", "volunteer_code": volunteer.volunteer_code, "status": volunteer.status}
+    return {"message": "Login successful", "volunteer": volunteer}
