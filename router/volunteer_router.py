@@ -1,8 +1,8 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from db import get_db
 from models import Volunteer
 from schema import VolunteerLogin
-from sqlalchemy.orm import Session, Depends
+from sqlalchemy.orm import Session
 
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
