@@ -56,3 +56,17 @@ class VolunteerSchema(BaseModel):
 class VolunteerLogin(BaseModel):
     name: str
     password: str
+
+class ShopQR(BaseModel):
+    id: str
+    shop_id: int
+    qrcode_id: str
+
+
+class UserScanRequest(BaseModel):
+    shop_id: int
+    qrcode_id: str
+
+
+class VolunteerScanRequest(BaseModel):
+    qrcode_id: str

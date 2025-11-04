@@ -31,3 +31,10 @@ class Volunteer(Base):
     name = Column(String(100), nullable=False)
     password = Column(String(100), nullable=False)
     status = Column(String(20), default="active")
+
+class ShopQR(Base):
+    __tablename__ = "shop_qr"
+
+    id = Column(Integer, primary_key=True, index=True)
+    shop_id = Column(Integer, ForeignKey("shop_owner.id"))
+    qrcode_id = Column(String(20), unique=True, nullable=False)
