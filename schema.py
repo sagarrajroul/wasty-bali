@@ -29,11 +29,8 @@ class ShopOwnerResponse(ShopOwnerBase):
         orm_mode = True
 
 class FormBase(BaseModel):
-    type_of_shop: str
-    dustbin_available: bool = False
-    hand_sanitizer_available: bool = False
-    use_plastic_bags: bool = True
-    rating: Optional[int] = 0
+    form_details: str
+    score: Optional[int] = 0
 
 
 class FormCreate(FormBase):

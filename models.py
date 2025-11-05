@@ -1,4 +1,6 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Boolean, func
+from sqlalchemy.orm import relationship
+
 from db import Base
 
 class ShopOwner(Base):
@@ -11,15 +13,16 @@ class ShopOwner(Base):
     phone_number = Column(String(15), nullable=False)
     password = Column(String, nullable=False)
     photo_url = Column(String, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    forms = relationship("Form", back_populates="shop_owner")
 
 class Form(Base):
     id = Column(Integer, primary_key=True, index=True)
-    type_of_shop = Column(String(100), nullable=False)
-    dustbin_available = Column(Boolean, default=False)
-    hand_sanitizer_available = Column(Boolean, default=False)
-    use_plastic_bags = Column(Boolean, default=True)
     shop_owner_id = Column(Integer, ForeignKey("shop_owner.id"))
-    rating = Column(Integer, default=0)
+    form_details = Column(String(500), nullable=False)
+    score = Column(Integer, default=0)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    shop_owner = relationship("ShopOwner", back_populates="forms")
     __tablename__ = "form"
 
 
