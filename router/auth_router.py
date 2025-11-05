@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, File, HTTPException, status, Form, UploadFile
 from sqlalchemy.orm import Session
+from models import ShopOwner, ShopQR
 import schema
 import crud.auth_crud as auth_crud
 from db import get_db
@@ -36,9 +37,10 @@ async def signup(
     return db_owner
 
 
-@router.post("/login", response_model=schema.ShopOwnerResponse, status_code=status.HTTP_200_OK)
+@router.post("/login", status_code=status.HTTP_200_OK)
 def login(credentials: schema.ShopOwnerLogin, db: Session = Depends(get_db)):
     owner = auth_crud.authenticate_shop_owner(db, credentials.shop_id, credentials.password)
     if not owner:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
-    return owner
+    taged = db.query(ShopQR).filter(ShopQR.shop_id == owner.id).first()
+    return {"shop":owner, "taged": True if taged else False}
