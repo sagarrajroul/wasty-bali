@@ -7,7 +7,7 @@ def create_shop_owner(db: Session, owner: schema.ShopOwnerCreate):
     # Check if shop_id already exists
     existing_owner = db.query(models.ShopOwner).filter(models.ShopOwner.phone_number == owner.phone_number).first()
     if existing_owner:
-        return {"error": "Phone number already exists"}
+        return None
 
     #hashed_pwd = hash_password(owner.password)
     db_owner = models.ShopOwner(

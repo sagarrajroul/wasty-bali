@@ -34,7 +34,7 @@ async def signup(
 
     db_owner = auth_crud.create_shop_owner(db, owner_data)
     if not db_owner:
-        raise HTTPException(status_code=400, detail="Shop ID already exists")
+        raise HTTPException(status_code=400, detail="Phone number already exists")
     return db_owner
 
 

@@ -9,7 +9,7 @@ from db import get_db
 
 router = APIRouter(prefix="/winner", tags=["Winner"])
 
-@router.post("/all", status_code=status.HTTP_201_CREATED)
+@router.post("/", status_code=status.HTTP_201_CREATED)
 def create_winner(winner_data: schema.WinnerCreate, db: Session = Depends(get_db)):
     # Step 1: Find shop owner by phone number
     shop_owner = db.query(models.ShopOwner).filter(models.ShopOwner.phone_number == winner_data.phone_number).first()
