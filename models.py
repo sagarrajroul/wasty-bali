@@ -9,7 +9,7 @@ class ShopOwner(Base):
     id = Column(Integer, primary_key=True, index=True)
     owner_name = Column(String(100), nullable=False)
     shop_name = Column(String(50), nullable=False)
-    shop_id = Column(String(50), unique=True, nullable=False)
+    shop_id = Column(String(50), nullable=True)
     phone_number = Column(String(15), nullable=False)
     password = Column(String, nullable=False)
     photo_url = Column(String, nullable=True)

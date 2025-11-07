@@ -39,8 +39,16 @@ async def signup(
 
 @router.post("/login", status_code=status.HTTP_200_OK)
 def login(credentials: schema.ShopOwnerLogin, db: Session = Depends(get_db)):
-    owner = auth_crud.authenticate_shop_owner(db, credentials.shop_id, credentials.password)
+    owner = auth_crud.authenticate_shop_owner(db, credentials.phone_number, credentials.password)
     if not owner:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
     taged = db.query(ShopQR).filter(ShopQR.shop_id == owner.id).first()
     return {"shop":owner, "taged": True if taged else False}
+
+
+@router.get("/owner/{owner_id}", response_model=schema.ShopOwnerResponse)
+def get_owner(owner_id: int, db: Session = Depends(get_db)):    
+    owner = auth_crud.get_shop_owner_by_id(db, owner_id)
+    if not owner:
+        raise HTTPException(status_code=404, detail="Shop owner not found")
+    return owner

@@ -17,7 +17,7 @@ class ShopOwnerCreate(ShopOwnerBase):
 
 # Login schema
 class ShopOwnerLogin(BaseModel):
-    shop_id: str
+    phone_number: str
     password: str
 
 

@@ -5,9 +5,9 @@ from utils.utils import hash_password, verify_password
 
 def create_shop_owner(db: Session, owner: schema.ShopOwnerCreate):
     # Check if shop_id already exists
-    existing_owner = db.query(models.ShopOwner).filter(models.ShopOwner.shop_id == owner.shop_id).first()
+    existing_owner = db.query(models.ShopOwner).filter(models.ShopOwner.phone_number == owner.phone_number).first()
     if existing_owner:
-        return None  # handle duplicate in route
+        return {"error": "Phone number already exists"}
 
     #hashed_pwd = hash_password(owner.password)
     db_owner = models.ShopOwner(
@@ -24,10 +24,13 @@ def create_shop_owner(db: Session, owner: schema.ShopOwnerCreate):
     return db_owner
 
 
-def authenticate_shop_owner(db: Session, shop_id: str, password: str):
-    owner = db.query(models.ShopOwner).filter(models.ShopOwner.shop_id == shop_id).first()
+def authenticate_shop_owner(db: Session, phone_number: str, password: str):
+    owner = db.query(models.ShopOwner).filter(models.ShopOwner.phone_number == phone_number).first()
     if not owner:
-        return None
+        return {"error": "Invalid phone number"}
     if password != owner.password:
-        return None
+        return {"error": "Invalid password"}
     return owner
+
+def get_shop_owner_by_id(db: Session, owner_id: int):
+    return db.query(models.ShopOwner).filter(models.ShopOwner.id == owner_id).first()
