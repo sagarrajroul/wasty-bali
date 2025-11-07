@@ -40,3 +40,11 @@ class ShopQR(Base):
     id = Column(Integer, primary_key=True, index=True)
     shop_id = Column(Integer, ForeignKey("shop_owner.id"))
     qrcode_id = Column(String(20), unique=True, nullable=False)
+
+class Winner(Base):
+    __tablename__ = "winner"
+
+    id = Column(Integer, primary_key=True, index=True)
+    shop_owner_id = Column(Integer, ForeignKey("shop_owner.id"))
+    winner_details = Column(String(500), nullable=True)
+    awarded_at = Column(DateTime(timezone=True), server_default=func.now())

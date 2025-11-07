@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 from typing import Optional
 
@@ -66,3 +67,18 @@ class UserScanRequest(BaseModel):
 
 class VolunteerScanRequest(BaseModel):
     qrcode_id: str
+
+class WinnerCreate(BaseModel):
+    phone_number: str
+    winner_details: Optional[str] = None
+
+
+class WinnerResponse(BaseModel):
+    id: int
+    winner_details: Optional[str]
+    awarded_at: datetime
+    shop_owner: dict
+    form: dict
+
+    class Config:
+        orm_mode = True

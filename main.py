@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from router import auth_router, form_router, volunteer_router, scan_router, admin_router
+from router import auth_router, form_router, volunteer_router, scan_router, admin_router, winner_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Small FastAPI App")
@@ -25,6 +25,7 @@ app.include_router(form_router.router)
 app.include_router(volunteer_router.router)
 app.include_router(scan_router.router)
 app.include_router(admin_router.router)
+app.include_router(winner_router.router)
 
 @app.get("/")
 def root():

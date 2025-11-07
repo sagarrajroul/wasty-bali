@@ -16,6 +16,7 @@ def get_all_owners(db: Session = Depends(get_db)):
     return db.query(models.ShopOwner).all()
 
 
+
 @router.post("/form/list", status_code=status.HTTP_200_OK)
 def list_forms(
     db: Session = Depends(get_db),
