@@ -5,6 +5,7 @@ import schema
 import crud.auth_crud as auth_crud
 from db import get_db
 from utils.s3_utils import upload_to_s3
+from typing import Optional
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -12,7 +13,7 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 async def signup(
     owner_name: str = Form(...),
     shop_name: str = Form(...),
-    shop_id: str = Form(...),
+    shop_id: Optional[str] = Form(None),
     phone_number: str = Form(...),
     password: str = Form(...),
     photo: UploadFile = File(None),

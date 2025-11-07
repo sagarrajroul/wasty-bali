@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import Optional
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import Date
 from sqlalchemy.orm import Session, joinedload
 from datetime import datetime
@@ -8,7 +9,7 @@ from db import get_db
 
 router = APIRouter(prefix="/winner", tags=["Winner"])
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post("/all", status_code=status.HTTP_201_CREATED)
 def create_winner(winner_data: schema.WinnerCreate, db: Session = Depends(get_db)):
     # Step 1: Find shop owner by phone number
     shop_owner = db.query(models.ShopOwner).filter(models.ShopOwner.phone_number == winner_data.phone_number).first()
@@ -27,9 +28,8 @@ def create_winner(winner_data: schema.WinnerCreate, db: Session = Depends(get_db
 
     return {"message": "Winner added successfully", "winner_id": new_winner.id}
 
-@router.get("/", status_code=status.HTTP_200_OK)
-def get_winners(db: Session = Depends(get_db)):
-    date = datetime.now()
+@router.post("/today", status_code=status.HTTP_200_OK)
+def get_winners(db: Session = Depends(get_db), date: Optional[datetime] = Query(None)):
     winner = db.query(models.Winner).filter(models.Winner.awarded_at.cast(Date) == date.date()).first()
     if not winner:
         raise HTTPException(status_code=404, detail="No winners found for today")
