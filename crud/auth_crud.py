@@ -27,9 +27,9 @@ def create_shop_owner(db: Session, owner: schema.ShopOwnerCreate):
 def authenticate_shop_owner(db: Session, phone_number: str, password: str):
     owner = db.query(models.ShopOwner).filter(models.ShopOwner.phone_number == phone_number).first()
     if not owner:
-        return {"error": "Invalid phone number"}
+        return None
     if password != owner.password:
-        return {"error": "Invalid password"}
+        return None
     return owner
 
 def get_shop_owner_by_id(db: Session, owner_id: int):
