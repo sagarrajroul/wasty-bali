@@ -11,12 +11,12 @@ router = APIRouter(prefix="/winner", tags=["Winner"])
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def create_winner(winner_data: schema.WinnerCreate, db: Session = Depends(get_db)):
-    # Step 1: Find shop owner by phone number
+    
     shop_owner = db.query(models.ShopOwner).filter(models.ShopOwner.phone_number == winner_data.phone_number).first()
     if not shop_owner:
         raise HTTPException(status_code=404, detail="Shop owner not found")
 
-    # Step 2: Create winner entry
+    
     new_winner = models.Winner(
         shop_owner_id=shop_owner.id,
         winner_details=winner_data.winner_details,
@@ -43,3 +43,19 @@ def get_winners(db: Session = Depends(get_db), date: Optional[datetime] = Query(
     if not winners:
         raise HTTPException(status_code=404, detail="No winners found for this date")
     return winners.all()
+
+@router.get("/winners/all", status_code=status.HTTP_200_OK)
+def get_all_winners(db: Session = Depends(get_db)):
+    all_winners = (
+        db.query(models.Winner)
+        .options(
+            joinedload(models.Winner.shop_owner).joinedload(models.ShopOwner.forms)
+        )
+        .order_by(models.Winner.awarded_at.desc())
+        .all()
+    )
+
+    if not all_winners:
+        raise HTTPException(status_code=404, detail="No winners found")
+
+    return all_winners

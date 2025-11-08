@@ -15,6 +15,7 @@ class ShopOwner(Base):
     photo_url = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     forms = relationship("Form", back_populates="shop_owner")
+    winner =relationship("Winner", back_populates="shop_owner", uselist=False)
 
 class Form(Base):
     id = Column(Integer, primary_key=True, index=True)
@@ -48,3 +49,4 @@ class Winner(Base):
     shop_owner_id = Column(Integer, ForeignKey("shop_owner.id"))
     winner_details = Column(String(500), nullable=True)
     awarded_at = Column(DateTime(timezone=True), server_default=func.now())
+    shop_owner = relationship("ShopOwner", back_populates="winner")
