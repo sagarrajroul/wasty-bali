@@ -11,6 +11,10 @@ router = APIRouter(prefix="/winner", tags=["Winner"])
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def create_winner(winner_data: schema.WinnerCreate, db: Session = Depends(get_db)):
+    today = winner_data.awarded_at
+    awarded = db.query(models.Winner).filter(models.Winner.awarded_at.cast(Date) == today.date(), models.Winner.type==winner_data.type).first()
+    if awarded:
+        raise HTTPException(status_code=400, detail="Winner for today already exists")
     
     shop_owner = db.query(models.ShopOwner).filter(models.ShopOwner.phone_number == winner_data.phone_number).first()
     if not shop_owner:
@@ -20,7 +24,8 @@ def create_winner(winner_data: schema.WinnerCreate, db: Session = Depends(get_db
     new_winner = models.Winner(
         shop_owner_id=shop_owner.id,
         winner_details=winner_data.winner_details,
-        awarded_at=datetime.now()
+        awarded_at=today, 
+        type=winner_data.type
     )
     db.add(new_winner)
     db.commit()

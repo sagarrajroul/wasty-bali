@@ -50,3 +50,4 @@ class Winner(Base):
     winner_details = Column(String(500), nullable=True)
     awarded_at = Column(DateTime(timezone=True), server_default=func.now())
     shop_owner = relationship("ShopOwner", back_populates="winner")
+    type = Column(String(50), nullable=True)

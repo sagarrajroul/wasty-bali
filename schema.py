@@ -71,6 +71,8 @@ class VolunteerScanRequest(BaseModel):
 class WinnerCreate(BaseModel):
     phone_number: str
     winner_details: Optional[str] = None
+    type: Optional[str] = None
+    awarded_at: Optional[datetime] = None
 
 
 class WinnerResponse(BaseModel):
